@@ -1,0 +1,63 @@
+.productNameEllipsis {
+    display: -webkit-box;
+    height: 6rem;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 400;
+}
+
+.clickableArea, .clickableArea:focus, .clickableArea:hover {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.productDescriptionEllipsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 6rem;
+    white-space: pre-wrap;
+}
+
+@media screen and (max-width: 540px) {
+    .productDescriptionEllipsis {
+      display: none;
+    }
+  }
+
+.productCard:hover{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    transition: 0.2s;
+}
+
+.cartButton {
+    background-color: white;
+    font-family: 'Rubik', sans-serif;
+    color: black;
+    margin: 1rem;
+}
+
+.cartButton:hover, .cartButton:focus {
+    background-color: #ef233c;
+    transition: 0.2s;  
+    color: white;
+}
+
+.productImg {
+    margin-top: 0.75rem;
+    border-radius: 0.5rem;
+    max-width: 90%;
+    height: 15rem;
+    object-fit: contain;
+}
+
+.price {
+    color: #ef233c;
+    font-weight: 500;
+}
+

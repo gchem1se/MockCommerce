@@ -1,0 +1,55 @@
+{% extends "with_nav.html" %}
+{% block title %}
+{{product.name}}
+{% endblock %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_cards.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/list_page.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/buttons.css') }}" />
+{% endblock %}
+{% block body %}
+{{ super() }}
+
+<div class="container col-12 pb-5">
+	{% if product %}
+	<div class="mt-5 card col-12">
+		<div class="col-12 mt-5 mb-5 d-flex flex-column align-items-center justify-content-center">
+			<img src="{{url_for('static', filename = 'img/products')}}/{{product.img_path}}"
+				class="detailsImg img-fluid rounded-start" alt={{product.name}}>
+		</div>
+		<div class="d-flex flex-column align-items-center col-12">
+			<div class="card-body col-10 mb-4">
+				<h5 class="productName card-title">{{product.name}}</h5>
+				<p class="card-text"><small class="text-muted">Categoria: {{product.category.name}}</small></p>
+				<p class="productDescription card-text">{{product.description}}</p>
+				<p class="card-text"><small class="text-muted">Disponibili: {{product.availability}}</small></p>
+				<p class="detailsPrice mt-4 mb-4">{{product.formattedPrice}}</p>
+				{% if username %}
+				<form action="/products/{{product.id}}" class="d-flex justify-content-end" method="post">
+					<div class="form-floating col-6 col-sm-3 col-lg-2 me-4">
+						{{ form.quantity(value = 1, min="1", max=product.availability, class="form-control",
+						id="quantity") }}
+						{{ form.quantity.label(for="quantity", class="ms-2") }}
+					</div>
+					<button type="submit" class="confirmButton updateButton text-nowrap col-3 col-md-6 btn btn-lg">
+						<i class="myIcon bi bi-cart-fill"></i>
+						<span class="d-none d-md-inline">AGGIUNGI AL CARRELLO</span>
+					</button>
+
+					<!-- hidden fields -->
+					{{ form.prodID(value = product.id) }}
+					{{ form.purchasePrice(value = product.price) }}
+					<!-- ^^ if an user adds the current product to cart but the product has been modified in its price
+									since the user loaded this page, the product is still correctly added in the cart with his new price -->
+					{{ form.csrf_token }}
+				</form>
+				{% else %}
+				<p class="card-text text-end">Accedi per aggiungere questo prodotto al carrello.</p>
+				{% endif %}
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

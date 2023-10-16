@@ -1,0 +1,43 @@
+{% set title %}{% block title %}{% endblock %}{% endset %}
+{% set subtitle %}{% block subtitle %}{% endblock %}{% endset %}
+{% set buttonText %}{% block buttonText %}{% endblock %}{% endset %}
+{% set alternative %}{% block alternative %}{% endblock %}{% endset %}
+{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}" />
+{% endblock %}
+{% block body %}
+<main class="myContainer">
+	<form class="myForm shadow col-10 col-md-8 col-lg-6 col-xl-4" action={% block action %}{% endblock %} method="post">
+		<a class="myBrand mb-5" href="/">MOCKCOMMERCE</a>
+		<div class="d-flex flex-column align-items-center">
+			<p class="formTitle mb-0">{{ title }}</p>
+			<a class="formSubtitle" href="{{ alternative }}">{{ subtitle }}</a>
+		</div>
+
+		{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+		{% for category, message in messages %}
+		{% if category == 'error' %}
+		<div class="alert alert-warning col-11" role="alert">{{ message }}</div>
+		{% elif category == 'success' %}
+		<div class="alert alert-success col-11" role="alert">{{ message }}</div>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		{% endwith %}
+
+		<div class="form-floating col-11 mb-3">
+			{{ form.username(class="form-control", id="username-input") }}
+			{{ form.username.label(for="username-input") }}
+		</div>
+		<div class="form-floating col-11 mb-5">
+			{{ form.password(class="form-control", id="password-input") }}
+			{{ form.password.label(for="password-input") }}
+		</div>
+		<input type="hidden" name="next-url" value="{{ request.args.get('next', '') }}" />
+		<button type="submit" class="redOutlineButton btn btn-lg">{{ buttonText }}</button>
+		{{ form.csrf_token }}
+	</form>
+</main>
+{% endblock %}

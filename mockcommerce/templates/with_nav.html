@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/navbar.css') }}" />
+{% endblock %}
+{% block body %}
+<nav class="navbar navbar-expand-lg fs-5 ps-2 pe-2">
+	<div class="container-fluid ps-1 pe-1">
+		<a class="navbar-brand" href="/">MOCKCOMMERCE</a>
+		<div>
+			<a href="/checkout">
+				<button class="navbar-toggler me-2">
+					<span class="bi bi-cart-fill"></span>
+				</button>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+				aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="bi bi-list"></span>
+			</button>
+		</div>
+
+		<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+			<ul class="navbar-nav ms-auto mt-4 mt-lg-2 mb-2 mb-lg-0">
+				{% if username %}
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/">HOME</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/my-products">I MIEI PRODOTTI</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/my-orders">I MIEI ORDINI</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active d-none d-lg-block" href="/checkout">
+						<i class="bi bi-cart-fill"></i>
+						<span>CARRELLO</span>
+					</a>
+				</li>
+				<li class="nav-item ms-lg-5">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+						aria-expanded="false">
+						@{{username}}
+					</a>
+					<ul class="dropdown-menu dropstart dropdown-menu-lg-end">
+						<a class="nav-link active ms-2 ms-lg-0" aria-current="page" href="/logout">LOGOUT</a>
+					</ul>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/login">LOGIN</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/signin">ISCRIVITI</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error' %}
+<div class="alert alert-warning" role="alert">{{ message }}</div>
+{% elif category == 'success' %}
+<div class="alert alert-success" role="alert">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% endblock %}

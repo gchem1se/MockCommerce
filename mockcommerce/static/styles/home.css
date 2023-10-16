@@ -1,0 +1,49 @@
+.mySidebar {
+  background-color: white;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.container {
+  animation-name: fadein;
+  animation-duration: 0.5s;
+}
+
+.mySidebar {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+}
+
+.mySidebarEntry {
+    width: 100%;
+    text-align: start;
+}
+
+.mySidebarEntry.selected {
+  background-color: #ef233c;
+  color: white;
+  font-weight: 500;
+}
+
+.mySidebarEntry:hover, .mySidebarEntry:focus {
+  color: #ef233c;
+  transition: 0.2s;
+  outline: 1px solid #ef233c;
+}
+
+.mySidebarEntry.selected:hover {
+  color: white;
+  transition: 0.2s;
+}
+
+
+

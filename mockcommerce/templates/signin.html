@@ -1,0 +1,12 @@
+{% extends "auth.html" %}
+{% block title %}
+Crea un account
+{% endblock %}
+{% block subtitle %}
+Sei già un utente?
+{% endblock %}
+{% block alternative %}
+/login
+{% endblock %}
+{% block buttonText %}ISCRIVITI{% endblock %}
+{% block action %}"{{ url_for('auth.signin_fun') }}"{% endblock %}

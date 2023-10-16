@@ -1,0 +1,31 @@
+.navbar {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color: white;
+  padding: 1rem;
+}
+.nav-link {
+  font-family: "Rubik", sans-serif;
+  font-weight: 900;
+  font-size: medium;
+  color: #888888 !important;
+}
+.nav-link:hover {
+  color: #ef233c !important;
+  transition: 0.2s;
+}
+
+.navbar-brand {
+  font-family: "Rubik", sans-serif;
+  color: #ef233c !important;
+  outline: 3px solid #ebebeb;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  border-radius: 2rem;
+  font-weight: 900;
+}
+
+.navbar-toggler:focus {
+  border-color: #ebebeb;
+  box-shadow: 0 0 0 2px #ebebeb;
+}

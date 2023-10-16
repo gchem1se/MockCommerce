@@ -1,0 +1,82 @@
+{% extends "with_nav.html" %}
+{% block title %}Storico vendite{% endblock %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/list_page.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_cards.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/buttons.css') }}" />
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+
+<div class="pb-5">
+	<main class="container-fluid mt-5 col-11">
+		<section class="headingWithButtons">
+			<h1 class="title pt-5 ms-3 ms-md-5 mb-5">Storico vendite</h1>
+			<div class="buttonsRow ms-3 ms-md-5 mb-5">
+				<form class="d-inline" action="/add-product" method="get">
+					<button type="submit" class="confirmButton updateButton btn me-3">
+						<span class="myIcon bi bi-plus-lg"></span>
+						<span class="d-none d-md-inline">AGGIUNGI UN PRODOTTO</span>
+					</button>
+				</form>
+				<form class="d-inline" action="/my-products" method="get">
+					<button type="submit" class="discardButton updateButton btn">
+						<span>TORNA AI TUOI PRODOTTI</span>
+					</button>
+				</form>
+			</div>
+		</section>
+		<div class="d-flex flex-column flex-column-reverse">
+			{% if not cumulativeOrders %}
+			<div class="alert alert-warning align-self-center col-11 mb-5" role="alert">Non hai ancora ricevuto ordini
+			</div>
+			{% else %}
+			{% for cumOrd in cumulativeOrders %}
+			<article class="d-flex flex-column align-items-center">
+				<div class="card pt-4 pb-4 ps-3 pe-3 col-11 col-md-10 ms-3 me-3 ms-md-5 me-md-5 mb-5">
+					<div class="orderInfo flex-column flex-md-row">
+						<div>
+							<p class="orderIDpill badge rounded-pill card-text">Identificativo ordine:
+								#{{cumOrd.cumulativeID}}</p>
+						</div>
+						<div class="text-start text-md-end p-2 p-md-0 mt-2 mt-md-0">
+							<p class="card-text"><small class="text-muted">Ordine ricevuto il:
+									{{cumOrd.purchaseDate}}</small></p>
+							<p class="card-text"><small class="text-muted">Spedito a: {{cumOrd.shippingName}}
+									{{cumOrd.shippingSurname}}, presso: {{cumOrd.shippingAddress}}</small></p>
+						</div>
+					</div>
+					{% for ord in cumOrd.ordersList %}
+					<hr>
+					<section class="row g-0">
+						<div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+							<img src="{{url_for('static', filename = 'img/products')}}/{{ord.product.img_path}}"
+								class="productImg img-fluid rounded-start" alt="{{ord.product.name}}">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								</p>
+								<h5 class="productNameEllipsis card-title">{{ord.product.name}}</h5>
+								<div class="d-flex flex-column">
+									<span class="price"><small>{{ord.formattedPurchasePrice}}</small></span>
+									<p class="quantities card-text">Venduti: {{ord.quantity}}</p>
+								</div>
+							</div>
+						</div>
+					</section>
+					{% endfor %}
+					<hr>
+					<div class="price text-end fs-2">{{cumOrd.formattedTotalPrice}}</div>
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</main>
+</div>
+
+<script src="{{url_for('static', filename='scripts/handle_update_forms.js')}}"></script>
+
+{% endblock %}

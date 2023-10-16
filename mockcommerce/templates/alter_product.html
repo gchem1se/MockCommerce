@@ -1,0 +1,98 @@
+{% extends "with_nav.html" %}
+{% block title %}I miei prodotti{% endblock %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/list_page.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_cards.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/my_products.css') }}" />
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+
+<div class="pb-5">
+    <main class="container-fluid mt-5 col-11">
+        <section class="headingWithButtons">
+            <h1 class="title pt-5 ms-3 ms-md-5 mb-5">I tuoi prodotti in vendita</h1>
+            <div class="buttonsRow ms-3 ms-md-5 mb-5">
+                <form class="d-inline" action="/my-products" method="get">
+                    <button type="submit" class="discardButton updateButton btn">
+                        <span>TORNA AI TUOI PRODOTTI</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+        <div class="formContainer col-12 d-flex justify-content-center">
+            {% if product %}
+            <form class="col-11 col-md-8 mb-5" id="alterProductForm" enctype="multipart/form-data"
+                action="/modify-product/{{ product.id }}" method="post">
+                {% else %}
+                <form class="col-11 col-md-8 mb-5" id="alterProductForm" enctype="multipart/form-data"
+                    action="/add-product" method="post">
+                    {% endif %}
+                    <div class="row">
+                        {% if product %}
+                        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                            <img src="{{url_for('static', filename = 'img/products')}}/{{product.img_path}}"
+                                id="productImg" data-productid={{product.id}} class="detailsImg img-fluid rounded-start"
+                                alt={{product.name}}>
+                        </div>
+                        {% else %}
+                        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                            <img src="{{url_for('static', filename = 'img/products/broken.png')}}" id="productImg"
+                                class="detailsImg img-fluid rounded-start" alt="Nessuna immagine">
+                        </div>
+                        {% endif %}
+                        <div class="col-sm-12">
+                            <!-- temporary fix because setting validators after having constructed the form
+                        seems to not work -->
+                            {{ form.img.label(class="form-label") }}
+                            {% if product %}
+                            {{ form.img(class="form-control", accept="image/*") }}
+                            {% else %}
+                            {{ form.img(class="form-control", accept="image/*", required="true") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="col-sm-12 mt-4">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                        </div>
+
+
+                        <div class="col-sm-12 mt-4">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control", rows=10) }}
+                        </div>
+
+                        <div class="col-sm-6 mt-4">
+                            {{ form.category.label(class="form-label") }}
+                            {{ form.category(class="myDropdown form-select") }}
+                        </div>
+
+                        <div class="col-sm-3 mt-4">
+                            {{ form.price.label(class="form-label") }}
+                            {{ form.price(class="form-control", min="0") }}
+                        </div>
+
+                        <div class="col-sm-3 mt-4">
+                            {{ form.availability.label(class="form-label") }}
+                            {{ form.availability(class="form-control", min="0") }}
+                        </div>
+                    </div>
+                    <div class="row mt-5 justify-content-end m-0">
+                        <button type="submit"
+                            class="submitButton confirmButton updateButton btn col-md-2 mt-3 mt-sm-0 btn-lg">CONFERMA</button>
+                    </div>
+                    <!-- hidden fields -->
+                    <!-- JS adds this -->
+                    {{ form.lastUpdateDate }}
+                    {{ form.csrf_token }}
+                </form>
+        </div>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='scripts/handle_alter_form.js') }}"></script>
+
+{% endblock %}

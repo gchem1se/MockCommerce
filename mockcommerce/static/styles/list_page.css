@@ -1,0 +1,122 @@
+main {
+    background-color: white;
+    border-radius: 0.75rem;
+}
+
+.title {
+    color: #ef233c;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 500;
+}
+
+.otherInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.updatesDates {
+    flex-shrink: 0;
+}
+
+.updatesDates > p {
+    margin-bottom: 0.05rem;
+}
+
+.price {
+    font-size: 1.5rem;
+    text-align: start;
+    margin-bottom: 1rem;
+}
+
+.updateButtonsList {
+    display: flex;
+    margin-bottom: 0.75rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:focus, a:hover {
+    color: black;    
+}
+
+.productName, .productName:hover, .productName:focus {
+    font-weight: 400;
+    color: black;
+    margin-bottom: 2rem;
+}
+
+.quantities {
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: start;
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+}
+
+.quantities > p {
+    margin-bottom: 0.25rem;
+    margin-right: 3rem;
+}
+
+.productDescription {
+    white-space: pre-wrap;
+}
+
+.productImg {
+    /* overriding product_cards.css */
+    margin-bottom: 1.75rem;
+}
+
+.orderIDpill {
+    color: #888888;
+    background-color: white;
+    border: 2px solid #ebebeb;
+    font-weight: 500;
+    align-self: flex-end;
+}
+
+.orderInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.buttonsRow {
+    margin-left: 3rem;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.headingWithButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.card {
+    border-radius: 0.75rem;
+}
+
+.detailsPrice {
+    font-size: 2.5rem;
+    color: #ef233c;
+    font-weight: 500;
+    width: 100%;
+}
+
+.detailsImg {
+    border-radius: 0.5rem;
+    max-width: 90%;
+    height: 30rem;
+    object-fit: contain;
+}

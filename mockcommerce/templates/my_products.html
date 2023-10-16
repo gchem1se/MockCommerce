@@ -1,0 +1,110 @@
+{% extends "with_nav.html" %}
+{% block title %}I miei prodotti{% endblock %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/list_page.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_cards.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/buttons.css') }}" />
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="pb-5">
+	<main class="container-fluid mt-5 col-11">
+		<section class="headingWithButtons">
+			<h1 class="title pt-5 ms-3 ms-md-5 mb-5">I tuoi prodotti in vendita</h1>
+			<div class="buttonsRow ms-3 ms-md-5 mb-5">
+				<form class="d-inline" action="/add-product" method="get">
+					<button type="submit" class="confirmButton updateButton btn me-3">
+						<span class="myIcon bi bi-plus-lg"></span>
+						<span class="d-none d-md-inline">AGGIUNGI UN PRODOTTO</span>
+					</button>
+				</form>
+				<a href="/received-orders">
+					<button class="discardButton updateButton btn">
+						<span>STORICO VENDITE</span>
+					</button>
+				</a>
+			</div>
+		</section>
+		<div class="d-flex flex-column flex-column-reverse">
+			{% if not products %}
+			<div class="alert alert-warning align-self-center col-11 mb-5" role="alert">Non hai prodotti in vendita
+			</div>
+			{% else %}
+			{% for prod in products %}
+			<article class="d-flex flex-column align-items-center">
+				<div class="card pt-4 pb-4 ps-3 pe-3 col-11 col-md-10 ms-3 me-3 ms-md-5 me-md-5 mb-5">
+					<div class="row g-0">
+						<div class="orderInfo flex-column flex-md-row">
+							<div class="updatesDates">
+								<p class="card-text"><small class="text-muted">Articolo inserito il
+										{{prod.insertion_date}}</small></p>
+								<p class="card-text"><small class="text-muted">Modificato l'ultima volta il
+										{{prod.last_update_date}}</small></p>
+							</div>
+							<div class="updateButtonsList mt-3 mt-md-0">
+								<button class="hidden discardButton updateButton btn me-3" data-productID="{{prod.id}}"
+									id="discard_{{prod.id}}">
+									<i class="myIcon bi bi-x-lg"></i>
+									<span class="d-none d-lg-inline">ANNULLA</span>
+								</button>
+								<form action="/my-products" method="post">
+									<button type="submit" class="hidden updateButton btn me-3"
+										data-productID="{{prod.id}}" id="confirm_{{prod.id}}">
+										<i class="myIcon bi bi-check-lg"></i>
+										<span class="d-none d-lg-inline">CONFERMA</span>
+									</button>
+									{{ removeForm.prodID(value=prod.id) }}
+									{{ removeForm.csrf_token }}
+								</form>
+								<form class="d-inline" action="/modify-product/{{prod.id}}" method="get">
+									<button type="submit" class="discardButton updateButton btn me-3"
+										data-productID="{{prod.id}}" id="update_{{prod.id}}">
+										<i class="myIcon bi bi-pencil-fill"></i>
+										<span class="d-none d-lg-inline">MODIFICA</span>
+									</button>
+								</form>
+								<button class=" updateButton btn" data-productID="{{prod.id}}" id="delete_{{prod.id}}">
+									<i class="myIcon bi bi-trash-fill"></i>
+									<span class="d-none d-lg-inline">ELIMINA</span>
+								</button>
+							</div>
+						</div>
+						<hr>
+						<div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+							<img src="{{url_for('static', filename = 'img/products')}}/{{prod.img_path}}"
+								class="productImg img-fluid rounded-stprod" alt="{{prod.name}}">
+						</div>
+						<div class="col-lg-8">
+							<div class="card-body">
+								<h5 class="productName card-title">{{prod.name}}</h5>
+								<p class="card-text"><small class="text-muted">Categoria: {{prod.category.name}}</small>
+								</p>
+								<p class="productDescription card-text">{{prod.description}}</p>
+								<hr>
+								<div class="quantities flex-column flex-lg-row">
+									<p class="card-text">
+										{% if prod.availability > 0 %}
+										Disponibili: {{prod.availability}}
+										{% else %}
+										Prodotto esaurito
+										{% endif %}
+									</p>
+									<p class="card-text">Venduti: {{prod.selled}}</p>
+								</div>
+								<span class="price">{{prod.formattedPrice}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</main>
+</div>
+
+<script src="{{ url_for('static', filename='scripts/handle_update_forms.js') }}"></script>
+
+{% endblock %}

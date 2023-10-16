@@ -1,0 +1,54 @@
+{% extends "with_nav.html" %}
+{% block title %}Home{% endblock %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_cards.css') }}" />
+{% endblock %}
+{% block body %}
+{{ super() }}
+<div class="d-flex">
+	<aside class="mySidebar mt-4 col-2 d-none d-lg-block">
+		<ul class="nav nav-pills flex-column mb-auto">
+			<li>
+				<a class="mySidebarEntry selected btn" data-categoryID="0">Tutte le categorie</a>
+			</li>
+			{% for cat in categorie %}
+			<li>
+				<a class="mySidebarEntry btn" data-categoryID={{cat.id}}>{{cat.name}}</a>
+			</li>
+			{% endfor %}
+		</ul>
+	</aside>
+
+	<main class="container mt-4">
+		<select class="myDropdown form-select mb-3 d-block d-lg-none">
+			<option value="0" selected>Tutte le categorie</option>
+			{% for cat in categorie %}
+			<option value="{{cat.id}}">{{cat.name}}</option>
+			{% endfor %}
+		</select>
+		<div class="row row-cols-2 row-cols-md-3 row-cols-xl-4">
+			{% for prod in products %}
+			<article class="col mb-4" data-categoryID={{prod.category.id}} data-productID={{prod.id}}>
+				<div class="productCard card">
+					<span class="myPill badge rounded-pill d-none d-sm-block">{{prod.category.name}}</span>
+					<a class="clickableArea" href="/products/{{prod.id}}">
+						<img src="{{url_for('static', filename = 'img/products')}}/{{prod.img_path}}" class="productImg"
+							alt="{{prod.name}}">
+						<div class="card-body col-12">
+							<p class="productNameEllipsis card-title">{{prod.name}}</p>
+							<p class="productDescriptionEllipsis card-text">{{prod.description}}</p>
+						</div>
+					</a>
+					<h3 class="price me-3 text-end">{{prod.formattedPrice}}</h3>
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+	</main>
+</div>
+
+<script src="{{url_for('static', filename='scripts/categories_filter.js')}}"></script>
+
+{% endblock %}

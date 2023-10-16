@@ -1,0 +1,36 @@
+.myForm {
+	background-color: white;
+	min-height: 70vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 1.5rem;
+	border-radius: 0.75rem;
+}
+
+.formTitle {
+	font-weight: 400;
+	font-size: 1.5rem;
+	color: #737373;
+}
+
+.formSubtitle, .formSubtitle:hover, .formSubtitle:focus {
+	color: #ef233c;
+	margin-bottom: 2rem;
+}
+
+.myBrand, .myBrand:focus, .myBrand:hover {
+	font-family: "Rubik", sans-serif;
+	text-align: center; 
+	color: #ef233c;
+	font-size: 1.5rem;
+	border: 3px solid #ebebeb;
+	border-radius: 2rem;
+	font-weight: 900;
+	padding-top: 0.5rem;
+	padding-bottom: 0.25rem;
+    text-decoration: none;
+	padding-left: 2rem;
+	padding-right: 2rem;
+}

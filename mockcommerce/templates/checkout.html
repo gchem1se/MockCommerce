@@ -1,0 +1,152 @@
+{% extends "with_nav.html" %}
+{% set title %}{% block title %}Carrello{% endblock %}{% endset %}
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_cards.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/list_page.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/checkout.css') }}" />
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+
+<div class="pb-5">
+	<main class="container-fluid mt-5 col-11">
+		<h1 class="title pt-5 ms-3 ms-md-5 mb-5">{{title}}</h1>
+		<div class="d-flex flex-column">
+			{% if not products %}
+			<div class="alert alert-warning align-self-center col-11 mb-5" role="alert">Il tuo carrello è vuoto</div>
+			{% else %}
+			<article class="d-flex flex-column align-items-center">
+				<div class="card pt-4 pb-4 ps-3 pe-3 col-11 col-md-10 ms-3 me-3 ms-md-5 me-md-5 mb-5">
+					{% for prodID in products %}
+					<section class="product row g-0" data-productID={{prodID}}>
+						<div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+							<img src="{{url_for('static', filename = 'img/products')}}/{{products[prodID].img_path}}"
+								class="productImg img-fluid rounded-start" alt="{{products[prodID].name}}">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h5 class="productNameEllipsis card-title">{{products[prodID].name}}</h5>
+								<div class="d-flex flex-column">
+									<span class="price" data-productID={{prodID}} data-value={{products[prodID].price}}
+										id="price_{{products[prodID].id}}"><small>{{products[prodID].formattedPrice}}</small></span>
+									<p class="card-text"><small class="text-muted">Disponibili:
+											{{products[prodID].availability}}</small></p>
+
+									<div class="d-flex align-items-center justify-content-between">
+										<div class="quantity form-floating">
+											<input type="number" min="1" value={{quantities[prodID]}}
+												class="form-control" id="quantity_{{products[prodID].id}}"
+												name="quantity">
+											<label for="quantity" class="ms-2">Quantità</label>
+										</div>
+										<form action="/checkout" method="post">
+											<button type="submit" class="updateButton btn"
+												id="delete_{{products[prodID].id}}">
+												<i class="myIcon bi bi-trash-fill"></i>
+												<span class="d-none d-lg-inline">ELIMINA</span>
+											</button>
+											{{ removeForm.prodID(value=products[prodID].id) }}
+											{{ removeForm.csrf_token }}
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<hr>
+					{% endfor %}
+					<div class="price text-end fs-2" id="totalPrice" data-value={{totalPrice}}>{{formattedTotalPrice}}</div>
+				</div>
+			</article>
+		</div>
+
+		<h1 class="title pt-5 ms-3 ms-md-5 mb-5">Procedi all'acquisto</h1>
+		<div class="formContainer col-12">
+			<form class="checkoutForm col-11 col-md-8" action="/checkout" method="post">
+				<div class="row">
+					<div class="col-sm-6">
+						{{ form.shippingName.label(class="form-label") }}
+						{{ form.shippingName(class="form-control") }}
+					</div>
+
+					<div class="col-sm-6 mt-4 mt-sm-0">
+						{{ form.shippingSurname.label(class="form-label") }}
+						{{ form.shippingSurname(class="form-control") }}
+					</div>
+
+					<div class="col-sm-6 mt-4">
+						{{ form.shippingPhone.label(class="form-label") }}
+						{{ form.shippingPhone(class="form-control") }}
+					</div>
+
+					<div class="col-sm-6 mt-4">
+						{{ form.shippingEmail.label(class="form-label") }}
+						{{ form.shippingEmail(class="form-control") }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 mt-4">
+						{{ form.shippingNation.label(class="form-label") }}
+						{{ form.shippingNation(class="form-control") }}
+					</div>
+
+					<div class="col-sm-6 mt-4">
+						{{ form.shippingProvince.label(class="form-label") }}
+						{{ form.shippingProvince(class="form-control") }}
+					</div>
+
+					<div class="col-sm-6 mt-4">
+						{{ form.shippingCity.label(class="form-label") }}
+						{{ form.shippingCity(class="form-control") }}
+					</div>
+
+					<div class="col-sm-6 mt-4">
+						{{ form.shippingStreet.label(class="form-label") }}
+						{{ form.shippingStreet(class="form-control") }}
+					</div>
+
+					<div class="col-sm-3 mt-4">
+						{{ form.shippingHouseNumber.label(class="form-label") }}
+						{{ form.shippingHouseNumber(class="form-control") }}
+					</div>
+
+					<div class="col-sm-3 mt-4">
+						{{ form.shippingPostalCode.label(class="form-label") }}
+						{{ form.shippingPostalCode(class="form-control") }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 mt-4">
+						{{ form.cardNumber.label(class="form-label") }}
+						{{ form.cardNumber(class="form-control") }}
+					</div>
+
+					<div class="col-sm-3 mt-4">
+						{{ form.expiryDate.label(class="form-label") }}
+						{{ form.expiryDate(class="form-control") }}
+					</div>
+
+					<div class="col-sm-3 mt-4">
+						{{ form.securityCode.label(class="form-label") }}
+						{{ form.securityCode(class="form-control") }}
+					</div>
+				</div>
+				<button type="submit" class="submitButton confirmButton updateButton btn btn-lg mt-5">ACQUISTA</button>
+				<!-- hidden fields -->
+				{{ form.userID(value=userID) }}
+				<!-- JS adds these two -->
+				{{ form.purchaseDate(id="purchaseDate")}}
+				{{ form.orders(id="orders") }}
+				<!-- ^^ make sure to validate this -->
+				{{ form.csrf_token }}
+			</form>
+		</div>
+	</main>
+</div>
+
+
+<script src="{{url_for('static', filename='scripts/handle_checkout_form_fields.js')}}"></script>
+{% endif %}
+{% endblock %}
